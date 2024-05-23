@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Padelucky - Edición #1</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <!-- Firebase Database -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
+    <!-- Firebase Authentication -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Padelucky</h1>
+            <p>Edición #1 Adidas Metalbone HRD 2024 Ale Galán</p>
+            <p>Participa con nuestra máquina de la suerte - Sorteo 1ro de julio</p>
+        </header>
+        <main>
+            <div id="selectedTicketsContainer">
+                <h2>Boletos Seleccionados</h2>
+                <ul id="selectedTicketsList"></ul>
+                <p>Total a pagar: $<span id="totalPrice">0</span> MXN</p>
+            </div>
+            <div id="ticketMachine">
+                <button id="randomTicketButton">Máquina de la suerte</button>
+                <input type="number" id="ticketQuantity" placeholder="Número de boletos" min="1" max="149">
+            </div>
+            <div id="ticketTableContainer">
+                <table id="ticketTable">
+                    <!-- La tabla se llenará dinámicamente con JavaScript -->
+                </table>
+            </div>
+            <button id="reserveButton" disabled>Apartar</button>
+            <div id="customerForm" class="modal hidden">
+                <div class="modal-content">
+                    <span class="closeButton" onclick="closeModal('customerForm')">&times;</span>
+                    <h2>Datos del Cliente</h2>
+                    <form id="reservationForm">
+                        <label for="name">Nombre:</label>
+                        <input type="text" id="name" required>
+                        <label for="phone">Celular:</label>
+                        <input type="tel" id="phone" required>
+                        <label for="state">Estado:</label>
+                        <select id="state" required>
+                            <option value="Aguascalientes">Aguascalientes</option>
+                            <option value="Baja California">Baja California</option>
+                            <option value="Baja California Sur">Baja California Sur</option>
+                            <option value="Campeche">Campeche</option>
+                            <option value="Ciudad de México">Ciudad de México</option>
+                            <option value="Chiapas">Chiapas</option>
+                            <option value="Chihuahua">Chihuahua</option>
+                            <option value="Coahuila de Zaragoza">Coahuila de Zaragoza</option>
+                            <option value="Colima">Colima</option>
+                            <option value="Durango">Durango</option>
+                            <option value="Estado de México">Estado de México</option>
+                            <option value="Guanajuato">Guanajuato</option>
+                            <option value="Guerrero">Guerrero</option>
+                            <option value="Hidalgo">Hidalgo</option>
+                            <option value="Jalisco">Jalisco</option>
+                            <option value="Michoacán de Ocampo">Michoacán de Ocampo</option>
+                            <option value="Morelos">Morelos</option>
+                            <option value="Nayarit">Nayarit</option>
+                            <option value="Nuevo León">Nuevo León</option>
+                            <option value="Oaxaca">Oaxaca</option>
+                            <option value="Puebla">Puebla</option>
+                            <option value="Querétaro">Querétaro</option>
+                            <option value="Quintana Roo">Quintana Roo</option>
+                            <option value="San Luis Potosí">San Luis Potosí</option>
+                            <option value="Sinaloa">Sinaloa</option>
+                            <option value="Sonora">Sonora</option>
+                            <option value="Tabasco">Tabasco</option>
+                            <option value="Tamaulipas">Tamaulipas</option>
+                            <option value="Tlaxcala">Tlaxcala</option>
+                            <option value="Veracruz de Ignacio de la Llave">Veracruz de Ignacio de la Llave</option>
+                            <option value="Yucatán">Yucatán</option>
+                            <option value="Zacatecas">Zacatecas</option>
+                        </select>
+                        <button type="submit">Enviar</button>
+                    </form>
+                </div>
+            </div>
+            <div>
+                <button id="verifyButton">Verificar</button>
+                <button id="accessButton">Acceso</button>
+            </div>
+            <div id="verifyForm" class="modal hidden">
+                <div class="modal-content">
+                    <span class="closeButton" onclick="closeModal('verifyForm')">&times;</span>
+                    <h2>Verificar Boleto</h2>
+                    <form id="verifyTicketForm">
+                        <label for="verifyTicketNumber">Número de Boleto:</label>
+                        <input type="text" id="verifyTicketNumber" required>
+                        <button type="submit">Verificar</button>
+                    </form>
+                    <div id="verifyResult"></div>
+                </div>
+            </div>
+            <div id="accessForm" class="modal hidden">
+                <div class="modal-content">
+                    <span class="closeButton" onclick="closeModal('accessForm')">&times;</span>
+                    <h2>Acceso Colaboradores</h2>
+                    <form id="accessVerificationForm">
+                        <label for="accessPassword">Contraseña:</label>
+                        <input type="password" id="accessPassword" required>
+                        <button type="submit">Ingresar</button>
+                    </form>
+                </div>
+            </div>
+            <div id="crmPanel" class="modal hidden">
+                <div class="modal-content">
+                    <span class="closeButton" onclick="closeModal('crmPanel')">&times;</span>
+                    <h2>CRM Colaboradores</h2>
+                    <div>
+                        <label for="reactivateTicketNumber">Número de Boleto:</label>
+                        <input type="text" id="reactivateTicketNumber">
+                        <button id="reactivateButton">Reactivar</button>
+                    </div>
+                    <div id="crmInfo">
+                        <!-- Información del CRM se llenará dinámicamente -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="firebase.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
